@@ -1,0 +1,255 @@
+******** Account.cs ********
+
+using System;
+
+public class Account
+{
+    private string AccountNumber;
+    private string AccountType;
+    protected double AccountBalance;
+
+    public Account() { }
+
+    public Account(string accountNumber, string accountType, double accountBalance)
+    {
+        this.AccountNumber = accountNumber;
+        this.AccountType = accountType;
+        this.AccountBalance = accountBalance;
+    }
+
+    // Getter and Setter methods
+    public string GetAccountNumber() => AccountNumber;
+    public void SetAccountNumber(string value) => AccountNumber = value;
+
+    public string GetAccountType() => AccountType;
+    public void SetAccountType(string value) => AccountType = value;
+
+    public double GetAccountBalance() => AccountBalance;
+    public void SetAccountBalance(double value) => AccountBalance = value;
+
+    // Deposit Overloads
+    public void Deposit(float amount) => AccountBalance += amount;
+    public void Deposit(int amount) => AccountBalance += amount;
+    public void Deposit(double amount) => AccountBalance += amount;
+
+    // Withdraw Overloads
+    public virtual void Withdraw(float amount)
+    {
+        if (amount <= AccountBalance)
+            AccountBalance -= amount;
+        else
+            Console.WriteLine("Insufficient balance.");
+    }
+
+    public virtual void Withdraw(int amount) => Withdraw((float)amount);
+    public virtual void Withdraw(double amount) => Withdraw((float)amount);
+
+    public virtual void CalculateInterest()
+    {
+        double interest = AccountBalance * 0.045;
+        Console.WriteLine($"Interest: {interest:F2}");
+    }
+
+    public void PrintAccountInfo()
+    {
+        Console.WriteLine("\n--- Account Info ---");
+        Console.WriteLine($"Account Number : {AccountNumber}");
+        Console.WriteLine($"Account Type   : {AccountType}");
+        Console.WriteLine($"Account Balance: {AccountBalance:F2}");
+    }
+}
+************ CurrentAccount.cs ***********
+
+using System;
+
+public class CurrentAccount : Account
+{
+    private const double OverdraftLimit = 5000.0;
+
+    public CurrentAccount(string accountNumber, double initialBalance)
+        : base(accountNumber, "Current", initialBalance)
+    {
+    }
+
+    public override void CalculateInterest()
+    {
+        Console.WriteLine("Current account does not earn interest.");
+    }
+
+    public override void Withdraw(float amount)
+    {
+        if (amount <= GetAccountBalance() + OverdraftLimit)
+            SetAccountBalance(GetAccountBalance() - amount);
+        else
+            Console.WriteLine("Withdrawal exceeds overdraft limit.");
+    }
+}
+
+********** Customer.cs **********
+
+using System;
+
+public class Customer
+{
+    private string CustomerID;
+    private string FirstName;
+    private string LastName;
+    private string EmailAddress;
+    private string PhoneNumber;
+    private string Address;
+
+    public Customer() { }
+
+    public Customer(string customerID, string firstName, string lastName, string emailAddress, string phoneNumber, string address)
+    {
+        this.CustomerID = customerID;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.EmailAddress = emailAddress;
+        this.PhoneNumber = phoneNumber;
+        this.Address = address;
+    }
+
+    public void PrintCustomerInfo()
+    {
+        Console.WriteLine("\n--- Customer Info ---");
+        Console.WriteLine($"Customer ID   : {CustomerID}");
+        Console.WriteLine($"Name          : {FirstName} {LastName}");
+        Console.WriteLine($"Email Address : {EmailAddress}");
+        Console.WriteLine($"Phone Number  : {PhoneNumber}");
+        Console.WriteLine($"Address       : {Address}");
+    }
+}
+
+******** Savings Account.cs *******
+using System;
+
+public class SavingsAccount : Account
+{
+    private double InterestRate = 4.5;
+
+    public SavingsAccount(string accountNumber, double initialBalance)
+        : base(accountNumber, "Savings", initialBalance)
+    {
+    }
+
+    public override void CalculateInterest()
+    {
+        double interest = GetAccountBalance() * (InterestRate / 100);
+        Console.WriteLine($"Interest added: {interest:F2}");
+        SetAccountBalance(GetAccountBalance() + interest);
+    }
+
+    public override void Withdraw(float amount)
+    {
+        if (amount <= GetAccountBalance())
+            SetAccountBalance(GetAccountBalance() - amount);
+        else
+            Console.WriteLine("Insufficient balance.");
+    }
+}
+
+*********** Program.cs ***********
+
+using System;
+
+class Bank
+{
+    static void Main(string[] args)
+    {
+        Account account = null;
+        Customer customer = null;
+
+        Console.WriteLine("--- Welcome to Thaarani's Bank ---");
+
+        // Customer info
+        Console.WriteLine("\nEnter Customer Details:");
+        Console.Write("Customer ID      : ");
+        string cid = Console.ReadLine();
+        Console.Write("First Name       : ");
+        string fname = Console.ReadLine();
+        Console.Write("Last Name        : ");
+        string lname = Console.ReadLine();
+        Console.Write("Email Address    : ");
+        string email = Console.ReadLine();
+        Console.Write("Phone Number     : ");
+        string phone = Console.ReadLine();
+        Console.Write("Address          : ");
+        string address = Console.ReadLine();
+
+        customer = new Customer(cid, fname, lname, email, phone, address);
+
+        // Account type
+        Console.WriteLine("\nSelect Account Type:");
+        Console.WriteLine("1. Savings Account");
+        Console.WriteLine("2. Current Account");
+        Console.Write("Enter choice: ");
+        int accChoice = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Account Number: ");
+        string accNum = Console.ReadLine();
+        Console.Write("Enter Initial Balance: ");
+        double balance = Convert.ToDouble(Console.ReadLine());
+
+        switch (accChoice)
+        {
+            case 1:
+                account = new SavingsAccount(accNum, balance);
+                break;
+            case 2:
+                account = new CurrentAccount(accNum, balance);
+                break;
+            default:
+                Console.WriteLine("Invalid choice.");
+                return;
+        }
+
+        // Menu
+        bool run = true;
+        while (run)
+        {
+            Console.WriteLine("\n--- Menu ---");
+            Console.WriteLine("1. Deposit");
+            Console.WriteLine("2. Withdraw");
+            Console.WriteLine("3. Calculate Interest");
+            Console.WriteLine("4. Show Info");
+            Console.WriteLine("5. Exit");
+            Console.Write("Choose: ");
+            int option = Convert.ToInt32(Console.ReadLine());
+
+            switch (option)
+            {
+                case 1:
+                    Console.Write("Enter deposit amount: ");
+                    double depAmt = Convert.ToDouble(Console.ReadLine());
+                    account.Deposit(depAmt);
+                    Console.WriteLine("Deposit successful.");
+                    break;
+
+                case 2:
+                    Console.Write("Enter withdraw amount: ");
+                    double wdAmt = Convert.ToDouble(Console.ReadLine());
+                    account.Withdraw(wdAmt);
+                    break;
+
+                case 3:
+                    account.CalculateInterest();
+                    break;
+
+                case 4:
+                    customer.PrintCustomerInfo();
+                    account.PrintAccountInfo();
+                    break;
+
+                case 5:
+                    run = false;
+                    Console.WriteLine("Thank you for banking with us!");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid option.");
+                    break;
+            }
+        }
+    }
+}
