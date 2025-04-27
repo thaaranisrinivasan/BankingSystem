@@ -1,0 +1,40 @@
+using System;
+
+class LoanEligibilityChecker
+{
+    static void Main(string[] args)
+    {
+        // Step 1: Take customer inputs
+        Console.WriteLine("=== Loan Eligibility Checker ===");
+
+        Console.Write("Enter Credit Score: ");
+        int creditScore = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Annual Income (in USD): ");
+        double annualIncome = Convert.ToDouble(Console.ReadLine());
+
+        // Step 2: Use conditional statements to check eligibility
+        if (creditScore > 700 && annualIncome >= 50000)
+        {
+            // Step 3: Display eligible message
+            Console.WriteLine("Congratulations! You are eligible for the loan.");
+        }
+        else
+        {
+            // Step 3: Display not eligible message
+            Console.WriteLine("Sorry, you are not eligible for the loan.");
+
+            // Optional: Provide reason for ineligibility
+            if (creditScore <= 700)
+            {
+                Console.WriteLine("- Credit score must be above 700.");
+            }
+            if (annualIncome < 50000)
+            {
+                Console.WriteLine("- Annual income must be at least $50,000.");
+            }
+        }
+
+        Console.WriteLine("\nThank you for using our Loan Eligibility Checker.");
+    }
+}
