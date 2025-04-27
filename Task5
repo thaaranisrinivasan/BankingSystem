@@ -1,0 +1,39 @@
+using System;
+
+class PasswordValidator
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Welcome to the Bank Password Setup");
+
+        Console.Write("Enter your new password: ");
+        string password = Console.ReadLine();
+
+        bool isLengthValid = password.Length >= 8;
+        bool hasUppercase = false;
+        bool hasDigit = false;
+
+        foreach (char c in password)
+        {
+            if (char.IsUpper(c))
+                hasUppercase = true;
+            if (char.IsDigit(c))
+                hasDigit = true;
+        }
+
+        if (isLengthValid && hasUppercase && hasDigit)
+        {
+            Console.WriteLine("Password is valid and secure.");
+        }
+        else
+        {
+            Console.WriteLine("Password is invalid. Please follow the rules:");
+            if (!isLengthValid)
+                Console.WriteLine("- Must be at least 8 characters long.");
+            if (!hasUppercase)
+                Console.WriteLine("- Must contain at least one uppercase letter.");
+            if (!hasDigit)
+                Console.WriteLine("- Must contain at least one digit.");
+        }
+    }
+}
