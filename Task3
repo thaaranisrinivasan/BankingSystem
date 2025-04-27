@@ -1,0 +1,36 @@
+using System;
+
+class CompoundInterestCalculator
+{
+    static void Main(string[] args)
+    {
+        Console.Write("Enter the number of customers: ");
+        int customerCount = Convert.ToInt32(Console.ReadLine());
+
+        // Loop through each customer
+        for (int i = 1; i <= customerCount; i++)
+        {
+            Console.WriteLine($"\nCustomer {i}");
+
+            // Input: initial balance
+            Console.Write("Enter initial balance: $");
+            double initialBalance = Convert.ToDouble(Console.ReadLine());
+
+            // Input: annual interest rate
+            Console.Write("Enter annual interest rate (in %): ");
+            double interestRate = Convert.ToDouble(Console.ReadLine());
+
+            // Input: number of years
+            Console.Write("Enter number of years: ");
+            int years = Convert.ToInt32(Console.ReadLine());
+
+            // Calculation: compound interest formula
+            double futureBalance = initialBalance * Math.Pow((1 + interestRate / 100), years);
+
+            // Output
+            Console.WriteLine($"Future balance after {years} years: ${futureBalance:F2}");
+        }
+
+        Console.WriteLine("\nInterest calculation completed for all customers.");
+    }
+}
