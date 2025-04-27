@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+
+class BankBalanceChecker
+{
+    static void Main(string[] args)
+    {
+        // Simulated bank account data
+        Dictionary<string, double> accounts = new Dictionary<string, double>()
+        {
+            { "1001", 1500.75 },
+            { "1002", 2450.00 },
+            { "1003", 379.50 },
+            { "1004", 9800.00 },
+            { "1005", 625.25 }
+        };
+
+        Console.WriteLine("Welcome to the Bank Balance Checker!");
+
+        while (true)
+        {
+            Console.Write("\nEnter your account number (or type 'exit' to quit): ");
+            string accountNumber = Console.ReadLine();
+
+            if (accountNumber.ToLower() == "exit")
+            {
+                Console.WriteLine("Thank you for using our service. Goodbye!");
+                break;
+            }
+
+            // Check if account number is valid
+            if (accounts.ContainsKey(accountNumber))
+            {
+                Console.WriteLine($"Account found!");
+                Console.WriteLine($"Account Balance: ${accounts[accountNumber]:F2}");
+            }
+            else
+            {
+                Console.WriteLine("Invalid account number. Please try again.");
+            }
+        }
+    }
+}
