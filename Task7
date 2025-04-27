@@ -1,0 +1,161 @@
+********** Account.cs ********
+
+class Account
+{
+    private string AccountNumber;
+    private string AccountType;
+    private double AccountBalance;
+
+    // Default Constructor
+    public Account() { }
+
+    // Parameterized Constructor
+    public Account(string accountNumber, string accountType, double accountBalance)
+    {
+        this.AccountNumber = accountNumber;
+        this.AccountType = accountType;
+        this.AccountBalance = accountBalance;
+    }
+
+    // Getters and Setters
+    public string GetAccountNumber() => AccountNumber;
+    public void SetAccountNumber(string num) => AccountNumber = num;
+
+    public string GetAccountType() => AccountType;
+    public void SetAccountType(string type) => AccountType = type;
+
+    public double GetAccountBalance() => AccountBalance;
+    public void SetAccountBalance(double bal) => AccountBalance = bal;
+
+    public void PrintAccountInfo()
+    {
+        Console.WriteLine("Account Details:");
+        Console.WriteLine($"Account Number: {AccountNumber}");
+        Console.WriteLine($"Account Type: {AccountType}");
+        Console.WriteLine($"Account Balance: {AccountBalance:F2}");
+    }
+
+    public void Deposit(double amount)
+    {
+        if (amount > 0)
+        {
+            AccountBalance += amount;
+            Console.WriteLine($"{amount} deposited successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid deposit amount.");
+        }
+    }
+
+    public void Withdraw(double amount)
+    {
+        if (amount > 0 && amount <= AccountBalance)
+        {
+            AccountBalance -= amount;
+            Console.WriteLine($"{amount} withdrawn successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Insufficient balance or invalid amount.");
+        }
+    }
+
+    public void CalculateInterest()
+    {
+        if (AccountType.ToLower() == "savings")
+        {
+            double interest = AccountBalance * 0.045;
+            AccountBalance += interest;
+            Console.WriteLine($"Interest {interest:F2} added.");
+        }
+        else
+        {
+            Console.WriteLine("Interest is only applicable to savings accounts.");
+        }
+    }
+}
+
+********* customer.cs **********
+
+class Customer
+{
+    private string CustomerID;
+    private string FirstName;
+    private string LastName;
+    private string EmailAddress;
+    private string PhoneNumber;
+    private string Address;
+
+    // Default Constructor
+    public Customer() { }
+
+    // Parameterized Constructor
+    public Customer(string customerID, string firstName, string lastName, string emailAddress, string phoneNumber, string address)
+    {
+        this.CustomerID = customerID;
+        this.FirstName = firstName;
+        this.LastName = lastName;
+        this.EmailAddress = emailAddress;
+        this.PhoneNumber = phoneNumber;
+        this.Address = address;
+    }
+
+    // Getters and Setters
+    public string GetCustomerID() => CustomerID;
+    public void SetCustomerID(string id) => CustomerID = id;
+
+    public string GetFirstName() => FirstName;
+    public void SetFirstName(string name) => FirstName = name;
+
+    public string GetLastName() => LastName;
+    public void SetLastName(string name) => LastName = name;
+
+    public string GetEmailAddress() => EmailAddress;
+    public void SetEmailAddress(string email) => EmailAddress = email;
+
+    public string GetPhoneNumber() => PhoneNumber;
+    public void SetPhoneNumber(string number) => PhoneNumber = number;
+
+    public string GetAddress() => Address;
+    public void SetAddress(string address) => Address = address;
+
+    public void PrintCustomerInfo()
+    {
+        Console.WriteLine("Customer Details:");
+        Console.WriteLine($"ID: {CustomerID}");
+        Console.WriteLine($"Name: {FirstName} {LastName}");
+        Console.WriteLine($"Email: {EmailAddress}");
+        Console.WriteLine($"Phone: {PhoneNumber}");
+        Console.WriteLine($"Address: {Address}");
+    }
+}
+
+****** Program.cs *******
+class Bank
+{
+    static void Main(string[] args)
+    {
+        // Step 1: Create Customer
+        Customer customer = new Customer("C001", "Thaarani", "K", "thaarani@email.com", "9876543210", "Chennai");
+
+        // Step 2: Create Account
+        Account account = new Account("A12345", "Savings", 10000);
+
+        // Step 3: Print Customer and Account Info
+        customer.PrintCustomerInfo();
+        Console.WriteLine();
+        account.PrintAccountInfo();
+        Console.WriteLine();
+
+        // Step 4: Perform Transactions
+        account.Deposit(5000);         // Deposit ₹5000
+        account.Withdraw(2000);        // Withdraw ₹2000
+        account.CalculateInterest();   // Apply 4.5% interest
+        Console.WriteLine();
+
+        // Step 5: Show Final Account Info
+        account.PrintAccountInfo();
+    }
+}
+
