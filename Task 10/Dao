@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.Security.Principal;
+using Bank_10.Entity;
+
+namespace Bank_10.DAO
+{
+    public class Bank
+    {
+        private List<Account> accounts = new List<Account>();
+
+        public Account CreateAccount(Customer customer, string accType, float balance)
+        {
+            Account newAccount = new Account(accType, balance, customer);
+            accounts.Add(newAccount);
+            return newAccount;
+        }
+
+        public float GetAccountBalance(long accNo)
+        {
+            var account = accounts.Find(a => a.AccountNumber == accNo);
+            return account != null ? account.Balance : 0;
+        }
+
+        public float Deposit(long accNo, float amount)
+        {
+            var account = accounts.Find(a => a.AccountNumber == accNo);
+            if (account != null)
+            {
+                account.Balance += amount;
+                return account.Balance;
+            }
+            return 0;
+        }
+
+        public float Withdraw(long accNo, float amount)
+        {
+            var account = accounts.Find(a => a.AccountNumber == accNo);
+            if (account != null && account.Balance >= amount)
+            {
+                account.Balance -= amount;
+                return account.Balance;
+            }
+            Console.WriteLine("Insufficient funds");
+            return account != null ? account.Balance : 0;
+        }
+
+        public void Transfer(long fromAcc, long toAcc, float amount)
+        {
+            if (Withdraw(fromAcc, amount) != 0)
+                Deposit(toAcc, amount);
+        }
+
+        public void GetAccountDetails(long accNo)
+        {
+            var account = accounts.Find(a => a.AccountNumber == accNo);
+            if (account != null)
+                account.DisplayAccountInfo();
+            else
+                Console.WriteLine("Account not found.");
+        }
+    }
+}
