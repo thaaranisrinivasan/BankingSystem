@@ -1,0 +1,86 @@
+*****  CurrentAccount.cs  *****
+using System;
+using task_9.Entity;
+
+namespace task_9.DAO
+{
+    public class CurrentAccount : BankAccount
+    {
+        private const float OverdraftLimit = 5000f;
+
+        public CurrentAccount(int accountNumber, string customerName, float balance)
+            : base(accountNumber, customerName, balance) { }
+
+        public override void Deposit(float amount)
+        {
+            Balance += amount;
+            Console.WriteLine($"Deposited {amount:C} successfully.");
+        }
+
+        public override void Withdraw(float amount)
+        {
+            if (Balance - amount >= -OverdraftLimit)
+            {
+                Balance -= amount;
+                Console.WriteLine($"Withdrawn {amount:C} successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Overdraft limit exceeded.");
+            }
+        }
+
+        public override void CalculateInterest()
+        {
+            Console.WriteLine("Current accounts do not earn interest.");
+        }
+    }
+}
+
+***** SavingsAccount.cs *****
+
+using System;
+using task_9.Entity;
+
+namespace task_9.DAO
+{
+    public class SavingsAccount : BankAccount
+    {
+        private float InterestRate;
+
+        public SavingsAccount(int accountNumber, string customerName, float balance, float interestRate)
+            : base(accountNumber, customerName, balance)
+        {
+            InterestRate = interestRate;
+        }
+
+        public override void Deposit(float amount)
+        {
+            Balance += amount;
+            Console.WriteLine($"Deposited {amount:C} successfully.");
+        }
+
+        public override void Withdraw(float amount)
+        {
+            if (Balance >= amount)
+            {
+                Balance -= amount;
+                Console.WriteLine($"Withdrawn {amount:C} successfully.");
+            }
+            else
+            {
+                Console.WriteLine("Insufficient balance.");
+            }
+        }
+
+        public override void CalculateInterest()
+        {
+            float interest = Balance * InterestRate / 100;
+            Balance += interest;
+            Console.WriteLine($"Interest added: {interest:C}");
+        }
+    }
+}
+
+
+
