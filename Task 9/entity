@@ -1,0 +1,29 @@
+using System;
+
+namespace task_9.Entity
+{
+    public abstract class BankAccount
+    {
+        public int AccountNumber { get; set; }
+        public string CustomerName { get; set; }
+        public float Balance { get; protected set; }
+
+        public BankAccount() { }
+
+        public BankAccount(int accountNumber, string customerName, float balance)
+        {
+            AccountNumber = accountNumber;
+            CustomerName = customerName;
+            Balance = balance;
+        }
+
+        public abstract void Deposit(float amount);
+        public abstract void Withdraw(float amount);
+        public abstract void CalculateInterest();
+
+        public void DisplayInfo()
+        {
+            Console.WriteLine($"Account Number: {AccountNumber}\nCustomer Name: {CustomerName}\nBalance: {Balance:C}");
+        }
+    }
+}
