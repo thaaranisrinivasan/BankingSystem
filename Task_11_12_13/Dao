@@ -1,0 +1,76 @@
+***** AccountDAO.cs *****
+using System.Collections.Generic;
+using BankingApplication.Entity;
+using BankingApplication.Exception;
+
+namespace BankingApplication.DAO
+{
+    public class AccountDAO
+    {
+        private List<Account> accounts = new List<Account>();
+
+        // Add a new account
+        public void AddAccount(Account account)
+        {
+            accounts.Add(account);
+        }
+
+        // Retrieve an account by account number
+        public Account GetAccount(long accountNumber)
+        {
+            Account account = accounts.Find(a => a.AccountNumber == accountNumber);
+            if (account == null)
+                throw new InvalidAccountException($"Account number {accountNumber} not found.");
+            return account;
+        }
+
+        // Retrieve all accounts
+        public List<Account> GetAllAccounts()
+        {
+            return accounts;
+        }
+
+        // Deposit money
+        public void Deposit(long accountNumber, double amount)
+        {
+            Account account = GetAccount(accountNumber);
+            account.Balance += amount;
+        }
+
+        // Withdraw money
+        public void Withdraw(long accountNumber, double amount)
+        {
+            Account account = GetAccount(accountNumber);
+            account.Withdraw(amount);
+        }
+    }
+}
+***** CustomerDAO.cs *****
+using System.Collections.Generic;
+using BankingApplication.Entity;
+
+namespace BankingApplication.DAO
+{
+    public class CustomerDAO
+    {
+        private List<Customer> customers = new List<Customer>();
+
+        // Add a new customer
+        public void AddCustomer(Customer customer)
+        {
+            customers.Add(customer);
+        }
+
+        // Retrieve a customer by ID
+        public Customer GetCustomer(int customerId)
+        {
+            return customers.Find(c => c.CustomerId == customerId);
+        }
+
+        // Retrieve all customers
+        public List<Customer> GetAllCustomers()
+        {
+            return customers;
+        }
+    }
+}
