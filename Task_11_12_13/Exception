@@ -1,0 +1,33 @@
+using System;
+
+namespace BankingApplication.Exception
+{
+    public class InsufficientFundException : ApplicationException
+    {
+        public InsufficientFundException(string message) : base(message)
+        {
+        }
+    }
+}
+using System;
+
+namespace BankingApplication.Exception
+{
+    public class InvalidAccountException : ApplicationException
+    {
+        public InvalidAccountException(string message) : base(message)
+        {
+        }
+    }
+}
+using System;
+
+namespace BankingApplication.Exception
+{
+    public class OverDraftLimitExceededException : ApplicationException
+    {
+        public OverDraftLimitExceededException(string message) : base(message)
+        {
+        }
+    }
+}
