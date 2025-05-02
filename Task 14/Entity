@@ -1,0 +1,152 @@
+***** Account.cs *****
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankEntity
+{
+    public abstract class Account
+    {
+        private static long lastAccNo = 1000000000;
+        public long AccountNumber { get; set; }
+        public string AccountType { get; set; }
+        public decimal Balance { get; set; }
+        public Customer Customer { get; set; }
+
+        public Account()
+        {
+            AccountNumber = ++lastAccNo;
+        }
+
+        public abstract void DisplayAccountInfo();
+    }
+}
+**** CurrentAccount.cs *****
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankEntity
+{
+    public class CurrentAccount : Account
+    {
+        public decimal OverdraftLimit { get; set; }
+
+        public CurrentAccount()
+        {
+            AccountType = "current";
+        }
+
+        public override void DisplayAccountInfo()
+        {
+            Console.WriteLine($"Current Account: {AccountNumber}, Balance: {Balance}, Overdraft Limit: {OverdraftLimit}");
+        }
+    }
+}
+***** Customer.cs *****
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankEntity
+{
+    public class Customer
+    {
+        public int CustomerId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime DOB { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
+
+        public override string ToString()
+        {
+            return $"Customer ID: {CustomerId}, Name: {FirstName} {LastName}, Email: {Email}, Phone: {PhoneNumber}, Address: {Address}";
+        }
+    }
+}
+***** SavingsAccount.cs *****
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankEntity
+{
+    public class SavingsAccount : Account
+    {
+        public float InterestRate { get; set; }
+
+        public SavingsAccount()
+        {
+            AccountType = "savings";
+            Balance = 500; // default minimum balance
+        }
+
+        public override void DisplayAccountInfo()
+        {
+            Console.WriteLine($"Savings Account: {AccountNumber}, Balance: {Balance}, Interest Rate: {InterestRate}");
+        }
+    }
+}
+***** Transaction.cs *****
+using System;
+
+namespace BankEntity
+{
+    public class Transaction
+    {
+        public int TransactionId { get; set; }
+        public int AccountId { get; set; }
+        public string TransactionType { get; set; }
+        public decimal TransactionAmount { get; set; }
+        public DateTime Date { get; set; }
+
+
+
+        public Transaction(int transactionId, int accountId, string transactionType, decimal amount, DateTime date)
+        {
+            TransactionId = transactionId;
+            AccountId = accountId;
+            TransactionType = transactionType;
+            TransactionAmount = amount;
+            Date = date;
+        }
+
+        public override string ToString()
+        {
+            return $"{Date:yyyy-MM-dd HH:mm} | {TransactionType} | ₹{TransactionAmount:F2} | Account ID: {AccountId}";
+        }
+    }
+}
+***** ZerobalanceAccount.cs *****
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankEntity
+{
+    public class ZeroBalanceAccount : Account
+    {
+        public ZeroBalanceAccount()
+        {
+            AccountType = "zero_balance";
+            Balance = 0;
+        }
+
+        public override void DisplayAccountInfo()
+        {
+            Console.WriteLine($"Zero Balance Account: {AccountNumber}, Balance: {Balance}");
+        }
+    }
+}
